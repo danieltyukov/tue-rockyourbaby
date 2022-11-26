@@ -36,3 +36,60 @@ int bpm_storage[bpm_storage_size];
 
 //debugging
 int sensor_logs = 1;
+
+void setF_A(int current_freq, int current_amp)
+{
+  // ledcWrite(pin, value)
+  // vary the duty cycle between 0 and 255
+  ledcWrite(amp_out, settings[current_amp - 1] * 255);
+  ledcWrite(freq_out, settings[current_freq - 1] * 255);
+}
+
+void setup()
+{
+    Serial.begin(9600);
+    Serial.println("STARTING");
+    
+    // pin modes
+    pinMode(heart, INPUT);
+    pinMode(freq_out, OUTPUT);
+    pinMode(amp_out, OUTPUT);
+    
+    delay(init_delay);
+    ledcSetup(freq_out, frequency_cradle, resolution_cradle);
+    ledcSetup(amp_out, frequency_cradle, resolution_cradle);
+    ledcAttachPin(freq_out, ledChannel_f);
+    ledcAttachPin(amp_out, ledChannel_a);
+    
+    // freq and amp - max vals
+    setF_A(freq_value, amp_value);
+    delay(update_delay);
+}
+
+void loop()
+{
+    freq_value -= 1;
+    setF_A(freq_value, amp_value);
+
+    // hit one of the edges 
+    // decrease freq and amp until we get to (freq,amp) = (1,1)
+    if (amp_value == 1)
+    {
+        while (f_value > 1)
+        {
+            freq_value--;
+            setF_A(freq_value, amp_value);
+            delay(update_delay);
+        }
+    }
+
+    if (freq_value == 1)
+    {
+        while (amp_value > 1)
+        {
+            amp_value--;
+            setF_A(freq_value, amp_value);
+            delay(update_delay);
+        }
+    }
+}
