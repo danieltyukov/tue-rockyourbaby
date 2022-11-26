@@ -37,7 +37,7 @@ int bpm_storage[bpm_storage_size];
 //debugging
 int sensor_logs = 1;
 
-void setF_A(int current_freq, int current_amp)
+void set_freq_amp(int current_freq, int current_amp)
 {
   // ledcWrite(pin, value)
   // vary the duty cycle between 0 and 255
@@ -62,14 +62,14 @@ void setup()
     ledcAttachPin(amp_out, ledChannel_a);
     
     // freq and amp - max vals
-    setF_A(freq_value, amp_value);
+    set_freq_amp(freq_value, amp_value);
     delay(update_delay);
 }
 
 void loop()
 {
     freq_value -= 1;
-    setF_A(freq_value, amp_value);
+    set_freq_amp(freq_value, amp_value);
 
     // hit one of the edges 
     // decrease freq and amp until we get to (freq,amp) = (1,1)
@@ -78,7 +78,7 @@ void loop()
         while (f_value > 1)
         {
             freq_value--;
-            setF_A(freq_value, amp_value);
+            set_freq_amp(freq_value, amp_value);
             delay(update_delay);
         }
     }
@@ -88,7 +88,7 @@ void loop()
         while (amp_value > 1)
         {
             amp_value--;
-            setF_A(freq_value, amp_value);
+            set_freq_amp(freq_value, amp_value);
             delay(update_delay);
         }
     }
