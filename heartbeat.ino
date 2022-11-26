@@ -75,7 +75,7 @@ void loop()
     // decrease freq and amp until we get to (freq,amp) = (1,1)
     if (amp_value == 1)
     {
-        while (f_value > 1)
+        while (freq_value > 1)
         {
             freq_value--;
             set_freq_amp(freq_value, amp_value);
