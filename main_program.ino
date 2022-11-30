@@ -1,3 +1,5 @@
+#include <M5Stack.h>
+
 // pins
 int heart = 4;
 int amp_out = 5;
@@ -149,6 +151,7 @@ bool readSensorVals()
 
 void setup()
 {
+    M5.begin();
     Serial.begin(9600);
     Serial.println("STARTING");
     
