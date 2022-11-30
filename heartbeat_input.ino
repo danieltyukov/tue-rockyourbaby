@@ -6,7 +6,7 @@ const int digitalPin = 2;
 void setup() {
     M5.begin();
     pinMode(digitalPin, INPUT);
-    Serial.printf("LUMINOSITY SENSOR TEST");
+    Serial.printf("LIGHT SENSOR TEST");
 }
 
 void loop() {
