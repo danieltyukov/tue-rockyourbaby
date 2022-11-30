@@ -11,7 +11,7 @@ void setup() {
 
 void loop() {
     int sensorValue = digitalRead(digitalPin);
-    Serial.println("Value Output: %0d\n", sensorValue);
+    Serial.printf("Value Output: %0d\n", sensorValue);
     delay(1000);
     // delay(200);
 }
