@@ -1,17 +1,17 @@
-#include <M5Stack.h>
 
-//GPIO input pin for DIGITAL signal
-const int digitalPin = 2;
+// 3.3V
+// GND
+// GIPIO 36
+#define LIGHT_SENSOR_PIN 36
 
 void setup() {
-    M5.begin();
-    pinMode(digitalPin, INPUT);
-    Serial.printf("LIGHT SENSOR TEST");
+  // serial communication at 9600 bits/s
+  Serial.begin(9600);
 }
 
 void loop() {
-    int sensorValue = digitalRead(digitalPin);
-    Serial.printf("Value Output: %0d\n", sensorValue);
-    delay(1000);
-    // delay(200);
+  int analogValue = analogRead(LIGHT_SENSOR_PIN);
+  Serial.print("Analog Value = ");
+  Serial.print(analogValue);
+  delay(500);
 }
