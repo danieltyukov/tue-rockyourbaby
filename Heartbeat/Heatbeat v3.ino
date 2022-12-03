@@ -12,14 +12,14 @@ void setup() {
 }
 
 void loop() {
-  LDRValue = digitalRead(LDRpin);// read the value from the LDR
-  if(LDRValue != previous_value){
-    Beats = Beats+1;
+  LDRValue = digitalRead(LDRpin);     // read the value from the LDR
+  if(LDRValue != previous_value){     // Checks of the hearbeat has changed from last time
+    Beats = Beats+1;                  // If it has it adds a beat, there is a bug in this because we add twice as much beats as actually happened. This makes it more accurate. But we need to compensate for this in the actual calculation. 
   }
-  myTime = millis();
-  BPM = (Beats/(myTime*0.001)*60)/2;
+  myTime = millis();                  // Asks the time that the program is running and saves it in the variable mytime. It is called mytime, because if you just use time you call a build in function.
+  BPM = (Beats/(myTime*0.001)*60)/2;  // The actual calculation, which should be beats/time. However the time is in miliseconds so you need to multiply by a thousand and by 60 to make it a value in minutes. The reason for the times 2 afterwards is explained in the beats++ line>
 
-  // Serial.print("Beats: ");
+  // Serial.print("Beats: ");         // These statements are used to debug if neccesarry the output will be on the serial monitor.
   // Serial.println(Beats);
   // Serial.print("Time: ");
   // Serial.println(myTime);
@@ -28,11 +28,11 @@ void loop() {
   // Serial.println(LDRValue);      // print the value to the serial portx
   
   Serial.print("BPM: ");
-  Serial.println(BPM);
+  Serial.println(BPM);              // Here the actual value gets printed
 
   
  
-  previous_value =LDRValue;
+  previous_value =LDRValue;      // Set the previous vale to the current loop for next loop
   delay(100);                    // wait a little
   
 }
