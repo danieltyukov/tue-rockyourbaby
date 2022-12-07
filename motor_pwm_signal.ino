@@ -12,9 +12,9 @@ void setup() {
   ledcAttachPin(buzzer, channel);
 }
 void loop() {
-    ledcWrite(channel, 128);
+    ledcWrite(channel, 128); 
     delay(1000);
-    ledcWrite(channel, 250);
+    ledcWrite(channel, 250); //100% duty cycle 
     delay(1000);
     ledcWrite(channel, 0);
     delay(1000);
