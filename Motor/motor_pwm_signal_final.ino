@@ -9,7 +9,9 @@ float settingsFREQ[5] = {0.05, 0.2, 0.4, 0.6, 0.8};
 float settingsAMP[5] = {0.05, 0.2, 0.4, 0.6, 0.8};
 
 int AMPchannel = 0;
-int FREQchannel = 1;
+int FREQchannel = 0;
+
+int buzzer = 1;
 
 String mode = "A";
 
@@ -39,10 +41,20 @@ void setup() {
     M5.Lcd.println("60% duty cycle");
     M5.Lcd.println("80% duty cycle");
 
+    // MAGIC BUZZER
+    ledcAttachPin(buzzer, AMPchannel);
+    
     ledcSetup(AMPchannel, freq, resolution_bits);
     ledcAttachPin(AMPchannel, 1);
     ledcSetup(FREQchannel, freq, resolution_bits);
-    ledcAttachPin(FREQchannel, 3);
+    ledcAttachPin(FREQchannel, 1);
+
+    
+    M5.Lcd.setTextColor(RED);
+    M5.Lcd.setCursor(0, 180);
+    M5.Lcd.println("MODE");
+    ledcWrite(AMPchannel, 250);
+    ledcWrite(FREQchannel, 250);
 }
 
 
