@@ -67,7 +67,7 @@ int currentBPM(){
       Serial.print("Timepassed: ");
       Serial.println(timepassed);
 
-      if(timepassed > 500){ //If start
+      if(timepassed > 500){ //If the time passed is bigger than half a second it will calculate the bpm and stop the programm, maybe this value can be a bit lower to make it faster.
         Serial.print("beats");
         Serial.println(beats);
         BPM = ((0.5 *60*beats)/(0.001*timepassed)); //Calculate the current bpm which is time two, because you got half a cycle, times 0.001 because the time is in millis and times 60 because it is beats per MINUTE
