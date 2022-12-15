@@ -21,12 +21,13 @@ int pinFreq = 3;
 #define pinLDR 5
 int lastBPM = 220;
 
-
+// Motor Control
 void motor(int freq1, int amp1) {
     ledcWrite(AMPchannel, settingsAMP[amp1]*250);
     ledcWrite(FREQchannel, settingsFREQ[freq1]*250);
 }
 
+// Heartbeat Measuring Decision
 bool heartbeat () {
 
 }
@@ -36,7 +37,7 @@ void setup() {
     M5.begin();
     // Init Power Module.
     M5.Power.begin();
-    // Serial COmmunication Begin
+    // Serial Communication Begin
     Serial.begin(9600);
 
     // Motor
