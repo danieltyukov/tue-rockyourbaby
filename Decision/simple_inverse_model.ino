@@ -20,6 +20,8 @@ int pinFreq = 3;
 // Heartbeat Vals
 #define pinLDR 5
 int lastBPM = 220;
+int tresholdBPM = 10;
+bool restingBPMreached = false;
 
 // Motor Control
 void motor(int freq1, int amp1) {
@@ -29,7 +31,10 @@ void motor(int freq1, int amp1) {
 
 // Heartbeat Measuring Decision
 bool heartbeat () {
-
+    // measure the heartbeat
+    // BPM improved = BPM + tresholdBPM < lastBPM
+    // if BPM improved, return true, otherwise return false
+    // also if BPM reaches 60, change "restingBPMreached" to true
 }
 
 void setup() {
@@ -54,6 +59,12 @@ void setup() {
 }
 
 void loop() {
+
+    // if restingBPMreached == true, turn off the M5Stack
+    if (restingBPMreached == true) {
+        M5.Power.powerOFF();
+    }
+
     freq1 -= 1;
     motor(freq1, amp1);
     delay(stressDelay);
