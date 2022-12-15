@@ -60,10 +60,6 @@ void setup() {
 
 void loop() {
 
-    // if restingBPMreached == true, turn off the M5Stack
-    if (restingBPMreached == true) {
-        M5.Power.powerOFF();
-    }
 
     freq1 -= 1;
     motor(freq1, amp1);
@@ -72,6 +68,11 @@ void loop() {
     // Measure the Heartbeat
     bool heartbeatResponse = heartbeat();
 
+    // if restingBPMreached == true, turn off the M5Stack
+    if (restingBPMreached == true) {
+        M5.Power.powerOFF();
+    }
+    
     // If Heartbeat is higher or the same: FALSE
     if (heartbeatResponse == false) {
 
