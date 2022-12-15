@@ -143,7 +143,7 @@ bool heartbeat(){
       decision = true;
       valid_value = true;
     }
-    // example: lastBPM = 200, tresholdBPM = 10, BPM = 218 -> meaning didnt change ot went higher
+    // example: lastBPM = 200, tresholdBPM = 10, BPM = 218 -> meaning didnt change or went higher
     else{
       decision = false;
       valid_value = true;
