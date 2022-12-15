@@ -60,7 +60,6 @@ void setup() {
 
 void loop() {
 
-
     freq1 -= 1;
     motor(freq1, amp1);
     delay(stressDelay);
@@ -72,7 +71,7 @@ void loop() {
     if (restingBPMreached == true) {
         M5.Power.powerOFF();
     }
-    
+
     // If Heartbeat is higher or the same: FALSE
     if (heartbeatResponse == false) {
 
