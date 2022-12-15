@@ -22,8 +22,8 @@ int pinFreq = 3;
 int lastBPM = 220;
 
 
-void motor(int freq1, int ampl) {
-    ledcWrite(AMPchannel, settingsAMP[ampl]*250);
+void motor(int freq1, int amp1) {
+    ledcWrite(AMPchannel, settingsAMP[amp1]*250);
     ledcWrite(FREQchannel, settingsFREQ[freq1]*250);
 }
 
