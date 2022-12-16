@@ -130,7 +130,7 @@ bool heartbeat(){
     }
 
     // BPM improved = BPM + tresholdBPM < lastBPM
-    if(BPM > (60-tresholdBPM) && BPM < (60+tresholdBPM)) {
+    if(BPM > (60-tresholdBPM) && BPM < (60+tresholdBPM) && lastBMP == 80) {
       //Rest mode
       decision = true;
       restingBPMreached = true;
@@ -139,15 +139,22 @@ bool heartbeat(){
     }
     // make a check that new bpm is within the treshold of the last bpm
     // example: lastBPM = 200, tresholdBPM = 10, BPM = 190, 200, 210 -> meaning changed and is within the treshold
+    //Nothing has changed
     else if (BPM > (lastBPM-tresholdBPM) && BPM < (lastBPM+tresholdBPM)){
-      decision = true;
-      valid_value = true;
-    }
-    // example: lastBPM = 200, tresholdBPM = 10, BPM = 218 -> meaning didnt change or went higher
-    else{
       decision = false;
       valid_value = true;
     }
+    // example: lastBPM = 200, tresholdBPM = 10, BPM = 218 -> meaning didnt change or went higher
+    // The stress level, went one lower
+    else if(BPM > (lastBPM-tresholdBPM-20) && BPM < (lastBPM-tresholdBPM){
+      decision = true;
+      valid_value = true;
+    }
+    //Panic code 
+    else if(BPM > 230 && BPM < 250){
+      decision = false;
+      valid_value = true;
+    }  
   }
 
   return decision;
