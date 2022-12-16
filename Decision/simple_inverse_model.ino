@@ -1,13 +1,13 @@
 #include <M5Stack.h>
 
 // Delays
-int generalDelay = 2000;
-int stressDelay = 3000;
+int generalDelay = 10000;
+int stressDelay = 10000;
 int heartbeatDelay = 12000;
 
 // Motor Vals
-int freq1 = 5;  
-int amp1 = 5;
+int freq1 = 4;  
+int amp1 = 4;
 int freq = 1000;
 int resolutionBits = 8;
 float settingsFREQ[5] = {0.05, 0.2, 0.4, 0.6, 0.8};
@@ -21,7 +21,7 @@ int pinFreq = 3;
 #define pinLDR 5
 int lastBPM = 220;
 int tresholdBPM = 10;
-bool restingBPMreached = false;
+// bool restingBPMreached = false;
 
 // ########## CONTROLS ##########
 
@@ -57,8 +57,6 @@ bool heartbeat(){
   int LDRValue = 0;
   // New BPM value
   int BPM = 0;
-  // Initial read value from the LDR for comparison purposes
-  int previous_value = 0;
 
   // ########## BPM Decision ##########
 
@@ -130,10 +128,10 @@ bool heartbeat(){
     }
 
     // BPM improved = BPM + tresholdBPM < lastBPM
-    if(BPM > (60-tresholdBPM) && BPM < (60+tresholdBPM) && lastBMP == 80) {
+    if(BPM > (60-tresholdBPM) && BPM < (60+tresholdBPM) && lastBPM == 80) {
       //Rest mode
       decision = true;
-      restingBPMreached = true;
+      // restingBPMreached = true;
 
       valid_value = true;
     }
@@ -146,7 +144,7 @@ bool heartbeat(){
     }
     // example: lastBPM = 200, tresholdBPM = 10, BPM = 218 -> meaning didnt change or went higher
     // The stress level, went one lower
-    else if(BPM > (lastBPM-tresholdBPM-20) && BPM < (lastBPM-tresholdBPM){
+    else if(BPM > (lastBPM-tresholdBPM-20) && BPM < (lastBPM-tresholdBPM)){
       decision = true;
       valid_value = true;
     }
@@ -166,7 +164,7 @@ void setup() {
   // Init Power Module.
   M5.Power.begin();
   // Serial Communication Begin
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   // Motor
   ledcAttachPin(pinAmp, AMPchannel);
@@ -183,6 +181,8 @@ void setup() {
 
 void loop() {
 
+  delay(generalDelay);
+
   freq1 -= 1;
   motor(freq1, amp1);
   delay(stressDelay);
@@ -191,7 +191,8 @@ void loop() {
   bool heartbeatResponse = heartbeat();
 
   // if restingBPMreached == true, turn off the M5Stack
-  if (restingBPMreached == true) {
+  // if freq1 and amp1 == 0
+  if (freq1 == 0 && amp1 == 0) {
     M5.Power.powerOFF();
   }
 
@@ -200,7 +201,7 @@ void loop() {
     // Move Back
     freq1 += 1;
     motor(freq1, amp1);
-    delay(1);
+    delay(1000);
 
     // Go Other Direction
     amp1 -= 1;
@@ -217,15 +218,15 @@ void loop() {
   }
 
   // Hitting Corner Solution
-  if (amp1 == 1) {
-    while (freq1 > 1) {
+  if (amp1 == 0) {
+    while (freq1 > 0) {
       freq1 -= 1;
       motor(freq1, amp1);
       delay(stressDelay);
     }
   }
-  if (freq1 == 1) {
-    while (amp1 > 1) {
+  if (freq1 == 0) {
+    while (amp1 > 0) {
       amp1 -= 1;
       motor(freq1, amp1);
       delay(stressDelay);
