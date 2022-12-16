@@ -1,7 +1,7 @@
 #include <M5Stack.h>
 
 // Delays
-int generalDelay = 10000;
+int generalDelay = 5000;
 int stressDelay = 10000;
 int heartbeatDelay = 12000;
 
@@ -21,7 +21,7 @@ int pinFreq = 3;
 #define pinLDR 5
 int lastBPM = 220;
 int tresholdBPM = 10;
-// bool restingBPMreached = false;
+
 
 // ########## CONTROLS ##########
 
@@ -36,7 +36,6 @@ bool heartbeat(){
   // measure the heartbeat
   // BPM improved = BPM + tresholdBPM < lastBPM
   // if BPM improved, return true, otherwise return false
-  // also if BPM reaches 60, change "restingBPMreached" to true
 
   delay(heartbeatDelay);
 
@@ -131,8 +130,6 @@ bool heartbeat(){
     if(BPM > (60-tresholdBPM) && BPM < (60+tresholdBPM) && lastBPM == 80) {
       //Rest mode
       decision = true;
-      // restingBPMreached = true;
-
       valid_value = true;
     }
     // make a check that new bpm is within the treshold of the last bpm
@@ -163,7 +160,7 @@ void setup() {
   M5.begin();
   // Init Power Module.
   M5.Power.begin();
-  // Serial Communication Begin
+  // Serial Communication.
   Serial.begin(115200);
 
   // Motor
@@ -190,10 +187,10 @@ void loop() {
   // Measure the Heartbeat
   bool heartbeatResponse = heartbeat();
 
-  // if restingBPMreached == true, turn off the M5Stack
-  // if freq1 and amp1 == 0
+  // rest mode reached
   if (freq1 == 0 && amp1 == 0) {
     M5.Power.powerOFF();
+    exit(0);
   }
 
   // If Heartbeat is higher or the same: FALSE
@@ -201,7 +198,7 @@ void loop() {
     // Move Back
     freq1 += 1;
     motor(freq1, amp1);
-    delay(1000);
+    delay(generalDelay);
 
     // Go Other Direction
     amp1 -= 1;
