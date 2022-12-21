@@ -1,9 +1,9 @@
 #include <M5Stack.h>
 
 // Delays
-int generalDelay = 5000;
-int stressDelay = 10000;
-int heartbeatDelay = 12000;
+int generalDelay = 7000;
+int stressDelay = 5000;
+int heartbeatDelay = 10000;
 
 // Motor Vals
 int freq1 = 4;  
@@ -180,18 +180,17 @@ void loop() {
 
   delay(generalDelay);
 
+  // rest mode reached
+  while ((freq1) == 0 && (amp1 == 0)) {
+    delay(5000);
+  }
+
   freq1 -= 1;
   motor(freq1, amp1);
   delay(stressDelay);
 
   // Measure the Heartbeat
   bool heartbeatResponse = heartbeat();
-
-  // rest mode reached
-  if (freq1 == 0 && amp1 == 0) {
-    M5.Power.powerOFF();
-    exit(0);
-  }
 
   // If Heartbeat is higher or the same: FALSE
   if (heartbeatResponse == false) {
