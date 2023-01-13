@@ -4,7 +4,6 @@
 int generalDelay = 7000;
 int stressDelay = 5000;
 int heartbeatDelay = 10000;
-int micDelay = 2000;
 
 // Motor Vals
 int freq1 = 4;
@@ -25,10 +24,20 @@ int tresholdBPM = 10;
 
 // Crying Vals
 #define pinMIC 35
-volatile int amount_of_peaks = 0;
-int previous_amount_of_peaks = 0;
-int previous_previous_amount_of_peaks = 0;
 bool crying_started = false;
+volatile int amount_of_peaks = 0;
+
+int previous_amount_of_peaks_1 = 0;
+int previous_amount_of_peaks_2 = 0;
+
+int current_amount_of_peaks_1 = 0;
+int current_amount_of_peaks_2 = 0;
+
+bool previous_decision = false;
+bool current_decision = false;
+
+int final_previous_amount_of_peaks = 0;
+int final_current_amount_of_peaks = 0;
 
 // ########## CONTROLS ##########
 
@@ -42,7 +51,7 @@ void motor(int freq1, int amp1)
 // Creying Measuing Decision
 bool crying()
 {
-  if ((amount_of_peaks - previous_amount_of_peaks) <= -150 && (amount_of_peaks - previous_previous_amount_of_peaks) <= -150)
+  if ((final_current_amount_of_peaks - final_previous_amount_of_peaks) <= -150)
   {
     return true;
   }
@@ -222,6 +231,27 @@ void setup()
 
 void loop()
 {
+  // Measure Microphone - Previous
+  if (crying_started == true)
+  {
+    while (previous_decision == false)
+    {
+      amount_of_peaks = 0;
+      delay(1000);
+      previous_amount_of_peaks_1 = amount_of_peaks;
+
+      amount_of_peaks = 0;
+      delay(1000);
+      previous_amount_of_peaks_2 = amount_of_peaks;
+
+      if ((previous_amount_of_peaks_1 - prevvious_amount_of_peaks_2) <= 150 && (previous_amount_of_peaks_1 - previous_amount_of_peaks_2) >= -150)
+      {
+        previous_decision = true;
+      }
+    }
+
+    final_previous_amount_of_peaks = previous_amount_of_peaks_1;
+  }
 
   delay(generalDelay);
 
@@ -288,7 +318,28 @@ void loop()
   }
   else
   {
-    delay(micDelay);
+    // Measure Microphone - Current
+    if (crying_started == true)
+    {
+      while (current_decision == false)
+      {
+        amount_of_peaks = 0;
+        delay(1000);
+        current_amount_of_peaks_1 = amount_of_peaks;
+
+        amount_of_peaks = 0;
+        delay(1000);
+        current_amount_of_peaks_2 = amount_of_peaks;
+
+        if ((current_amount_of_peaks_1 - current_amount_of_peaks_2) <= 150 && (current_amount_of_peaks_1 - current_amount_of_peaks_2) >= -150)
+        {
+          current_decision = true;
+        }
+      }
+
+      final_current_amount_of_peaks = current_amount_of_peaks_1;
+    }
+
     bool microphoneResponse = crying();
 
     // If Crying is higher or the same: FALSE
@@ -304,12 +355,6 @@ void loop()
       motor(freq1, amp1);
       delay(stressDelay);
     }
-
-    previous_previous_amount_of_peaks = previous_amount_of_peaks;
-    previous_amount_of_peaks = amount_of_peaks;
-    amount_of_peaks = 0;
-
-    delay(micDelay);
 
     // Hitting Corner Solution
     if (amp1 == 0)
