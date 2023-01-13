@@ -19,6 +19,7 @@ int pinFreq = 3;
 
 // Heartbeat Vals
 #define pinLDR 5
+bool heartbeatResponse = false;
 int lastBPM = 220;
 int tresholdBPM = 10;
 
@@ -244,7 +245,7 @@ void loop()
       delay(1000);
       previous_amount_of_peaks_2 = amount_of_peaks;
 
-      if ((previous_amount_of_peaks_1 - prevvious_amount_of_peaks_2) <= 150 && (previous_amount_of_peaks_1 - previous_amount_of_peaks_2) >= -150)
+      if ((previous_amount_of_peaks_1 - previous_amount_of_peaks_2) <= 150 && (previous_amount_of_peaks_1 - previous_amount_of_peaks_2) >= -150)
       {
         previous_decision = true;
       }
