@@ -1,9 +1,9 @@
 #include <M5Stack.h>
 
 // Delays
-int generalDelay = 7000;
+int generalDelay = 5000;
 int stressDelay = 5000;
-int heartbeatDelay = 10000;
+int heartbeatDelay = 12000;
 
 // Motor Vals
 int freq1 = 4;
@@ -49,7 +49,7 @@ void motor(int freq1, int amp1)
   ledcWrite(FREQchannel, settingsFREQ[freq1] * 250);
 }
 
-// Creying Measuing Decision
+// Crying Measuing Decision
 bool crying()
 {
   if ((final_current_amount_of_peaks - final_previous_amount_of_peaks) <= -150)
@@ -72,8 +72,6 @@ bool heartbeat()
   // BPM improved = BPM + tresholdBPM < lastBPM
   // if BPM improved, return true, otherwise return false
 
-  delay(heartbeatDelay);
-
   bool decision;
 
   bool valid_value = false;
@@ -95,6 +93,7 @@ bool heartbeat()
   // ########## BPM Decision ##########
 
   // Initial read value from the LDR
+  delay(heartbeatDelay);
   int previous_value = digitalRead(pinLDR);
 
   // Validate the value loop
@@ -112,7 +111,6 @@ bool heartbeat()
       // Checks if there has been a change from last loop
       if (LDRValue != previous_value)
       {
-
         // Takes the time the first change is noticed
         timestart = millis();
 
@@ -129,7 +127,6 @@ bool heartbeat()
     // Loop until bpm is detected 2nd
     while (second_change == false)
     {
-
       LDRValue = digitalRead(pinLDR);
       Serial.println(LDRValue);
 
@@ -207,12 +204,15 @@ bool heartbeat()
 
 void setup()
 {
-  // Init M5Core.
-  M5.begin();
-  // Init Power Module.
+  // Initialize Coomunication with M5Stack
+  M5.begin(true, true, false, true);
+  Serial.begin(9600);
   M5.Power.begin();
-  // Serial Communication.
-  Serial.begin(115200);
+
+  M5.Lcd.setTextColor(YELLOW);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(0, 20);
+  M5.Lcd.println("BABY ROCKING SOFTWARE - TEAM 25 V2.0");
 
   // Motor
   ledcAttachPin(pinAmp, AMPchannel);
@@ -220,18 +220,26 @@ void setup()
   ledcSetup(AMPchannel, freq, resolutionBits);
   ledcSetup(FREQchannel, freq, resolutionBits);
 
-  // Microphone
-  attachInterrupt(pinMIC, count_peaks, RISING);
-
   delay(generalDelay);
 
   // Start the Motor at 80% Duty Cycle
   motor(freq1, amp1);
   delay(stressDelay);
+
+  // Microphone
+  attachInterrupt(pinMIC, count_peaks, RISING);
 }
 
 void loop()
 {
+  delay(generalDelay);
+
+  // rest mode reached
+  while ((freq1 == 0) && (amp1 == 0))
+  {
+    delay(5000);
+  }
+
   // Measure Microphone - Previous
   if (crying_started == true)
   {
@@ -254,14 +262,6 @@ void loop()
     final_previous_amount_of_peaks = previous_amount_of_peaks_1;
   }
 
-  delay(generalDelay);
-
-  // rest mode reached
-  while ((freq1) == 0 && (amp1 == 0))
-  {
-    delay(5000);
-  }
-
   freq1 -= 1;
   motor(freq1, amp1);
   delay(stressDelay);
@@ -274,13 +274,15 @@ void loop()
 
   if (crying_started == false)
   {
+    bool heartbeatResponse = heartbeat();
+    delay(generalDelay);
     // If Heartbeat is higher or the same: FALSE
     if (heartbeatResponse == false)
     {
       // Move Back
       freq1 += 1;
       motor(freq1, amp1);
-      delay(generalDelay);
+      delay(stressDelay);
 
       // Go Other Direction
       amp1 -= 1;
@@ -349,7 +351,7 @@ void loop()
       // Move Back
       freq1 += 1;
       motor(freq1, amp1);
-      delay(generalDelay);
+      delay(stressDelay);
 
       // Go Other Direction
       amp1 -= 1;

@@ -1,9 +1,9 @@
 #include <M5Stack.h>
 
 // Delays
-int generalDelay = 7000;
+int generalDelay = 5000;
 int stressDelay = 5000;
-int heartbeatDelay = 10000;
+int heartbeatDelay = 12000;
 
 // Motor Vals
 int freq1 = 4;  
@@ -37,10 +37,8 @@ bool heartbeat(){
   // BPM improved = BPM + tresholdBPM < lastBPM
   // if BPM improved, return true, otherwise return false
 
-  delay(heartbeatDelay);
-
   bool decision;
-      
+
   bool valid_value = false;
   bool first_change = false;
   bool second_change = false;
@@ -60,6 +58,7 @@ bool heartbeat(){
   // ########## BPM Decision ##########
 
   // Initial read value from the LDR
+  delay(heartbeatDelay);
   int previous_value = digitalRead(pinLDR);
 
   // Validate the value loop
@@ -156,12 +155,15 @@ bool heartbeat(){
 }
 
 void setup() {
-  // Init M5Core.  
-  M5.begin();
-  // Init Power Module.
+  // Initialize Coomunication with M5Stack
+  M5.begin(true, true, false, true);
+  Serial.begin(9600);
   M5.Power.begin();
-  // Serial Communication.
-  Serial.begin(115200);
+
+  M5.Lcd.setTextColor(YELLOW);
+  M5.Lcd.setTextSize(2);
+  M5.Lcd.setCursor(0, 20);
+  M5.Lcd.println("BABY ROCKING SOFTWARE - TEAM 25 V1.0");
 
   // Motor
   ledcAttachPin(pinAmp, AMPchannel);
@@ -181,7 +183,7 @@ void loop() {
   delay(generalDelay);
 
   // rest mode reached
-  while ((freq1) == 0 && (amp1 == 0)) {
+  while ((freq1 == 0) && (amp1 == 0)) {
     delay(5000);
   }
 
@@ -197,7 +199,7 @@ void loop() {
     // Move Back
     freq1 += 1;
     motor(freq1, amp1);
-    delay(generalDelay);
+    delay(stressDelay);
 
     // Go Other Direction
     amp1 -= 1;
