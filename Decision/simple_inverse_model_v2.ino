@@ -240,6 +240,16 @@ void loop()
     delay(5000);
   }
 
+  freq1 -= 1;
+  motor(freq1, amp1);
+  delay(stressDelay);
+
+  // Measure the Heartbeat
+  if (crying_started == false)
+  {
+    bool heartbeatResponse = heartbeat();
+  }
+
   // Measure Microphone - Previous
   if (crying_started == true)
   {
@@ -260,16 +270,6 @@ void loop()
     }
 
     final_previous_amount_of_peaks = previous_amount_of_peaks_1;
-  }
-
-  freq1 -= 1;
-  motor(freq1, amp1);
-  delay(stressDelay);
-
-  // Measure the Heartbeat
-  if (crying_started == false)
-  {
-    bool heartbeatResponse = heartbeat();
   }
 
   if (crying_started == false)
@@ -322,26 +322,23 @@ void loop()
   else
   {
     // Measure Microphone - Current
-    if (crying_started == true)
+    while (current_decision == false)
     {
-      while (current_decision == false)
+      amount_of_peaks = 0;
+      delay(1000);
+      current_amount_of_peaks_1 = amount_of_peaks;
+
+      amount_of_peaks = 0;
+      delay(1000);
+      current_amount_of_peaks_2 = amount_of_peaks;
+
+      if ((current_amount_of_peaks_1 - current_amount_of_peaks_2) <= 150 && (current_amount_of_peaks_1 - current_amount_of_peaks_2) >= -150)
       {
-        amount_of_peaks = 0;
-        delay(1000);
-        current_amount_of_peaks_1 = amount_of_peaks;
-
-        amount_of_peaks = 0;
-        delay(1000);
-        current_amount_of_peaks_2 = amount_of_peaks;
-
-        if ((current_amount_of_peaks_1 - current_amount_of_peaks_2) <= 150 && (current_amount_of_peaks_1 - current_amount_of_peaks_2) >= -150)
-        {
-          current_decision = true;
-        }
+        current_decision = true;
       }
-
-      final_current_amount_of_peaks = current_amount_of_peaks_1;
     }
+
+    final_current_amount_of_peaks = current_amount_of_peaks_1;
 
     bool microphoneResponse = crying();
 
