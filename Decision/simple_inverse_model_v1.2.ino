@@ -1,9 +1,9 @@
 #include <M5Stack.h>
 
 // Delays
-int generalDelay = 5000;
-int stressDelay = 5000;
-int heartbeatDelay = 12000;
+int generalDelay = 1000;
+int stressDelay = 1000;
+int heartbeatDelay = 10000;
 
 // Motor Vals
 int freq1 = 4;  
@@ -110,7 +110,8 @@ bool heartbeat(){
           
           M5.Lcd.setCursor(0, 40);
           M5.Lcd.println("BEATS DETECTED: ");
-          M5.Lcd.setCursor(0, alignment+20);
+          alignment = alignment + 20;
+          M5.Lcd.setCursor(0, alignment);
           M5.Lcd.println(beats);
 
           Serial.print("beats: ");
@@ -171,7 +172,7 @@ void setup() {
   M5.Lcd.setTextColor(YELLOW);
   M5.Lcd.setTextSize(2);
   M5.Lcd.setCursor(0, 20);
-  M5.Lcd.println("BABY ROCKING SOFTWARE - TEAM 25 V1.2");
+  M5.Lcd.println("BABY SOFTWARE - V1.2");
 
   // Motor
   ledcAttachPin(pinAmp, AMPchannel);
@@ -179,11 +180,9 @@ void setup() {
   ledcSetup(AMPchannel, freq, resolutionBits);
   ledcSetup(FREQchannel, freq, resolutionBits);
 
-  delay(generalDelay);
-
   // Start the Motor at 80% Duty Cycle
   motor(freq1, amp1);
-  delay(stressDelay);
+  delay(5000);
 }
 
 void loop() {
