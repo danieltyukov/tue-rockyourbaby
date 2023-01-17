@@ -1,8 +1,8 @@
 #include <M5Stack.h>
 
 // Delays
-int generalDelay = 1000;
-int stressDelay = 1000;
+int generalDelay = 2000;
+int stressDelay = 2000;
 int heartbeatDelay = 10000;
 
 // Motor Vals
@@ -227,7 +227,6 @@ void loop() {
     lastBPM -= 20;
   }
 
-  delay(generalDelay);
   // Hitting Corner Solution
   if (amp1 == 0) {
     while (freq1 > 0) {
