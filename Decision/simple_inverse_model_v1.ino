@@ -1,9 +1,9 @@
 #include <M5Stack.h>
 
 // Delays
-int generalDelay = 5000;
-int stressDelay = 5000;
-int heartbeatDelay = 12000;
+int generalDelay = 2000;
+int stressDelay = 2000;
+int heartbeatDelay = 10000;
 
 // Motor Vals
 int freq1 = 4;  
@@ -21,7 +21,6 @@ int pinFreq = 3;
 #define pinLDR 5
 int lastBPM = 220;
 int tresholdBPM = 10;
-
 
 // ########## CONTROLS ##########
 
@@ -109,7 +108,7 @@ bool heartbeat(){
           Serial.println(beats);
 
           // Calculate the current bpm which is time two, because you got half a cycle, times 0.001 because the time is in millis and times 60 because it is beats per MINUTE
-          BPM = ((0.5 *60*beats)/(0.001*timepassed));
+          BPM = ((0.5*60*beats)/(0.001*timepassed));
           
           second_change = true;
         }
@@ -163,7 +162,7 @@ void setup() {
   M5.Lcd.setTextColor(YELLOW);
   M5.Lcd.setTextSize(2);
   M5.Lcd.setCursor(0, 20);
-  M5.Lcd.println("BABY ROCKING SOFTWARE - TEAM 25 V1.0");
+  M5.Lcd.println("BABY SOFTWARE - V1");
 
   // Motor
   ledcAttachPin(pinAmp, AMPchannel);
@@ -171,11 +170,9 @@ void setup() {
   ledcSetup(AMPchannel, freq, resolutionBits);
   ledcSetup(FREQchannel, freq, resolutionBits);
 
-  delay(generalDelay);
-
   // Start the Motor at 80% Duty Cycle
   motor(freq1, amp1);
-  delay(stressDelay);
+  delay(5000);
 }
 
 void loop() {

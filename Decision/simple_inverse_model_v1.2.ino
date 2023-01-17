@@ -24,7 +24,6 @@ int tresholdBPM = 10;
 
 // Alignment
 int alignment = 40;
-int alignment2 = 60;
 
 // ########## CONTROLS ##########
 
@@ -115,9 +114,6 @@ bool heartbeat(){
           alignment = alignment + 20;
           M5.Lcd.setCursor(0, alignment);
           M5.Lcd.println(beats);
-          alignment2 = alignment2 + 20;
-          M5.Lcd.setCursor(0, alignment2);
-          M5.Lcd.println(timepassed);
 
           Serial.print("beats: ");
           Serial.println(beats);
