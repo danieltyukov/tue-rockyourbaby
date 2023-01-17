@@ -24,6 +24,7 @@ int tresholdBPM = 10;
 
 // Alignment
 int alignment = 40;
+int alignment2 = 60;
 
 // ########## CONTROLS ##########
 
@@ -108,11 +109,15 @@ bool heartbeat(){
         // Checks if the time passed is more than 500ms, if so, it is a valid bpm
         if(timepassed > 500) {
           
+          // Check of Timepassed and Beats
           M5.Lcd.setCursor(0, 40);
-          M5.Lcd.println("BEATS DETECTED: ");
+          M5.Lcd.println("BEATS & TIME: ");
           alignment = alignment + 20;
           M5.Lcd.setCursor(0, alignment);
           M5.Lcd.println(beats);
+          alignment2 = alignment2 + 20;
+          M5.Lcd.setCursor(0, alignment2);
+          M5.Lcd.println(timepassed);
 
           Serial.print("beats: ");
           Serial.println(beats);
@@ -222,6 +227,7 @@ void loop() {
     lastBPM -= 20;
   }
 
+  delay(generalDelay);
   // Hitting Corner Solution
   if (amp1 == 0) {
     while (freq1 > 0) {
