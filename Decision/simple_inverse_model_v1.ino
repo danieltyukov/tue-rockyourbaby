@@ -22,6 +22,10 @@ int pinFreq = 3;
 int lastBPM = 220;
 int tresholdBPM = 10;
 
+// Alignment
+int alignment = 40;
+int alignment2 = 60;
+
 // ########## CONTROLS ##########
 
 // Motor Control
@@ -104,6 +108,17 @@ bool heartbeat(){
   
         // Checks if the time passed is more than 500ms, if so, it is a valid bpm
         if(timepassed > 500) {
+          
+          // Check of Timepassed and Beats
+          M5.Lcd.setCursor(0, 40);
+          M5.Lcd.println("BEATS & TIME: ");
+          alignment = alignment + 20;
+          M5.Lcd.setCursor(0, alignment);
+          M5.Lcd.println(beats);
+          alignment2 = alignment2 + 20;
+          M5.Lcd.setCursor(0, alignment2);
+          M5.Lcd.println(timepassed);
+
           Serial.print("beats: ");
           Serial.println(beats);
 
@@ -162,7 +177,7 @@ void setup() {
   M5.Lcd.setTextColor(YELLOW);
   M5.Lcd.setTextSize(2);
   M5.Lcd.setCursor(0, 20);
-  M5.Lcd.println("BABY SOFTWARE - V1.0");
+  M5.Lcd.println("BABY SOFTWARE - V1");
 
   // Motor
   ledcAttachPin(pinAmp, AMPchannel);
