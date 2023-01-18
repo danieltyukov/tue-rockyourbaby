@@ -173,7 +173,7 @@ void setup() {
   M5.Lcd.setTextColor(YELLOW);
   M5.Lcd.setTextSize(2);
   M5.Lcd.setCursor(0, 20);
-  M5.Lcd.println("BABY SOFTWARE - V1.2");
+  M5.Lcd.println("BABY SOFTWARE - V1.3");
 
   // Motor
   ledcAttachPin(pinAmp, AMPchannel);
