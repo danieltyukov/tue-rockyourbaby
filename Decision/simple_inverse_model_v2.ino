@@ -1,9 +1,9 @@
 #include <M5Stack.h>
 
 // Delays
-int generalDelay = 5000;
-int stressDelay = 5000;
-int heartbeatDelay = 12000;
+int generalDelay = 2000;
+int stressDelay = 2000;
+int heartbeatDelay = 10000;
 
 // Motor Vals
 int freq1 = 4;
@@ -212,7 +212,7 @@ void setup()
   M5.Lcd.setTextColor(YELLOW);
   M5.Lcd.setTextSize(2);
   M5.Lcd.setCursor(0, 20);
-  M5.Lcd.println("BABY ROCKING SOFTWARE - TEAM 25 V2.0");
+  M5.Lcd.println("BABY ROCKING - V2.0");
 
   // Motor
   ledcAttachPin(pinAmp, AMPchannel);
@@ -220,12 +220,10 @@ void setup()
   ledcSetup(AMPchannel, freq, resolutionBits);
   ledcSetup(FREQchannel, freq, resolutionBits);
 
-  delay(generalDelay);
-
   // Start the Motor at 80% Duty Cycle
   motor(freq1, amp1);
-  delay(stressDelay);
 
+  delay(5000);
   // Microphone
   attachInterrupt(pinMIC, count_peaks, RISING);
 }
