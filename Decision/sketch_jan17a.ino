@@ -108,22 +108,22 @@ bool heartbeat(){
   
         // Checks if the time passed is more than 500ms, if so, it is a valid bpm
         if(timepassed > 500) {
-          
-          // Check of Timepassed and Beats
-          M5.Lcd.setCursor(0, 40);
-          M5.Lcd.println("BEATS & TIME: ");
-          alignment = alignment + 20;
-          M5.Lcd.setCursor(0, alignment);
-          M5.Lcd.println(beats);
-          alignment2 = alignment2 + 20;
-          M5.Lcd.setCursor(0, alignment2);
-          M5.Lcd.println(timepassed);
 
           Serial.print("beats: ");
           Serial.println(beats);
 
           // Calculate the current bpm which is time two, because you got half a cycle, times 0.001 because the time is in millis and times 60 because it is beats per MINUTE
           BPM = ((0.5*60*beats)/(0.001*timepassed));
+
+          // Check of Timepassed and Beats
+          M5.Lcd.setCursor(0, 40);
+          M5.Lcd.println("BPM & TIME: ");
+          alignment = alignment + 20;
+          M5.Lcd.setCursor(0, alignment);
+          M5.Lcd.println(beats);
+          alignment2 = alignment2 + 20;
+          M5.Lcd.setCursor(0, alignment2);
+          M5.Lcd.println(timepassed);
           
           second_change = true;
         }
@@ -241,5 +241,21 @@ void loop() {
       motor(freq1, amp1);
       delay(stressDelay);
     }
+  }
+  // display the current frequency and amplitude duty cycle
+  M5.Lcd.setCursor(0, 200);
+  M5.Lcd.setTextColor(YELLOW, BLACK);
+  // if at 0% duty cycle, display 05.00% instead of 5.00%
+  if (settingsFREQ[freq1] * 100 < 10) {
+      M5.Lcd.println("FREQ: 0" + String(settingsFREQ[freq1] * 100) + "%");
+  }
+  else {
+      M5.Lcd.println("FREQ: " + String(settingsFREQ[freq1] * 100) + "%");
+  }
+  if (settingsAMP[ampl] * 100 < 10) {
+      M5.Lcd.println("AMP: 0" + String(settingsAMP[amp1] * 100) + "%");
+  }
+  else {
+      M5.Lcd.println("AMP: " + String(settingsAMP[amp1] * 100) + "%");
   }
 }
