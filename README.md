@@ -9,4 +9,4 @@
 
 ## 📌 Video Demo
 
-![RYB_Overview_New_Setup_2022](https://drive.google.com/file/d/1gziotaAQrM-uwN4YMGw3zv35IAcOEnd7/view?usp=share_link)
+https://drive.google.com/file/d/1gziotaAQrM-uwN4YMGw3zv35IAcOEnd7/view?usp=share_link
